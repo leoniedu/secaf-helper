@@ -66,7 +66,7 @@ function secaf() {
 
     // Check current date
     const dataAtual = new Date();
-    const diaAtual = dataAtual.getDate();
+    const diaAtual = String(dataAtual.getDate()).padStart(2, '0');
     const mesAtual = dataAtual.getMonth() + 1;
     const anoAtual = dataAtual.getFullYear();
     const dataAtualStr = `${diaAtual}/${mesAtual}/${anoAtual}`;
@@ -85,7 +85,7 @@ function secaf() {
         7: "JUL", 8: "AGO", 9: "SET", 10: "OUT", 11: "NOV", 12: "DEZ"
       };
       const mesAbrev = mesesAbrev[mesAtual];
-      const formatoPortugues = new RegExp(`\\b${diaAtual}${mesAbrev}`, 'i');
+      const formatoPortugues = new RegExp(`${diaAtual}${mesAbrev}`, 'i');
 
       if (formatoPortugues.test(textoData)) {
         console.log("A data da primeira linha corresponde à data atual. Pulando esta linha.");
