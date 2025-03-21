@@ -38,6 +38,7 @@ function secaf() {
   const diasFerias = prompt("Número de dias de férias no mês:", "0");
   if (diasFerias === null) return;
 
+  
   // Calculate holidays
   let feriadosEFacultativos = diasSegundaASexta - diasUteis;
   const usarFeriadosCalculados = confirm(
@@ -88,8 +89,11 @@ function secaf() {
       const formatoPortugues = new RegExp(`${diaAtual}${mesAbrev}`, 'i');
 
       if (formatoPortugues.test(textoData)) {
-        console.log("A data da primeira linha corresponde à data atual. Pulando esta linha.");
-        pularPrimeiraLinha = true;
+        const pular_data_de_hoje = confirm("Pular a data de hoje na primeira linha?");
+        if (pular_data_de_hoje) {
+          console.log("A data da primeira linha corresponde à data atual. Pulando esta linha.");
+          pularPrimeiraLinha = true;
+        }
       }
     }
 
