@@ -85,10 +85,9 @@ function secaf() {
         7: "JUL", 8: "AGO", 9: "SET", 10: "OUT", 11: "NOV", 12: "DEZ"
       };
       const mesAbrev = mesesAbrev[mesAtual];
-      const formatoPortugues = new RegExp(`\\b${diaAtual}${mesAbrev}\\b`, 'i');
-      const formatoNumerico = new RegExp(`\\b${diaAtual}[/\\-]${mesAtual}[/\\-]${anoAtual}\\b`);
+      const formatoPortugues = new RegExp(`\\b${diaAtual}${mesAbrev}`, 'i');
 
-      if (formatoPortugues.test(textoData) || formatoNumerico.test(textoData) || textoData.includes("Hoje") || textoData.includes("hoje")) {
+      if (formatoPortugues.test(textoData)) {
         console.log("A data da primeira linha corresponde à data atual. Pulando esta linha.");
         pularPrimeiraLinha = true;
       }
