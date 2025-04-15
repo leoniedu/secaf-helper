@@ -138,6 +138,22 @@ function secaf() {
   // Calculate hour balance
   const saldoHoras = horasDevidasMes - horasTrabalhadasMes;
 
+  // Calculate remaining weekdays in month (excluding holidays)
+  const todayDate = new Date();
+  const currentYearValue = todayDate.getFullYear();
+  const currentMonthValue = todayDate.getMonth();
+  const lastDayOfMonth = new Date(currentYearValue, currentMonthValue + 1, 0).getDate();
+  let remainingWorkdays = 0;
+
+  for (let dayOfMonth = todayDate.getDate(); dayOfMonth <= lastDayOfMonth; dayOfMonth++) {
+    const dateObject = new Date(currentYearValue, currentMonthValue, dayOfMonth);
+    if (dateObject.getDay() !== 0 && dateObject.getDay() !== 6) { // Skip weekends
+      remainingWorkdays++;
+    }
+  }
+
+  const saldoHorasDia = saldoHoras > 0 ? saldoHoras / remainingWorkdays : 0;
+
   // Create results HTML
   const htmlResultado = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
     <h2 style="color: #333; text-align: center;">Cálculo de Horas Presenciais SECAF</h2>
@@ -180,8 +196,16 @@ function secaf() {
           ${formatarHorasMinutos(Math.abs(saldoHoras))} ${saldoHoras > 0 ? '(faltam horas)' : '(horas excedentes)'}
         </td>
       </tr>
+      ${saldoHoras > 0 ? `
+      <tr style="background-color: #f0f8ff; font-weight: bold;">
+        <td style="padding: 8px; border: 1px solid #ddd;">Saldo diário (${remainingWorkdays} dias úteis restantes*)</td>
+        <td style="padding: 8px; border: 1px solid #ddd; color: ${saldoHorasDia > 0 ? 'red' : 'green'};">
+          ${formatarHorasMinutos(saldoHorasDia)}
+        </td>
+      </tr>` : ''}
     </table>
     <p style="margin-top: 20px; font-size: 12px; color: #666; text-align: center;">
+      *Dias úteis restantes não consideram feriados ou pontos facultativos<br>
       Cálculo baseado nas regras do PGD 2.0 do IBGE.<br>
       Desenvolvido pelo pacote ibgeba_utils - Chrome Extension
     </p>
@@ -235,6 +259,22 @@ function calcularDiasSegundaASexta(ano, mes) {
   }
 
   return contador;
+}
+
+// Helper function to count workdays passed in month
+function contarDiasUteisPassados(ano, mes) {
+  const hoje = new Date();
+  const ultimoDia = new Date(ano, mes, 0).getDate();
+  let diasUteisPassados = 0;
+  
+  for (let dia = 1; dia <= hoje.getDate(); dia++) {
+    const data = new Date(ano, mes - 1, dia);
+    if (data.getDay() !== 0 && data.getDay() !== 6) { // Skip weekends
+      diasUteisPassados++;
+    }
+  }
+  
+  return diasUteisPassados;
 }
 
 // Helper function to format year/month
