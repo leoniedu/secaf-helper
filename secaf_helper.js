@@ -38,7 +38,7 @@ function secaf() {
   const diasFerias = prompt("Número de dias de férias no mês:", "0");
   if (diasFerias === null) return;
 
-  
+
   // Calculate holidays
   let feriadosEFacultativos = diasSegundaASexta - diasUteis;
   const usarFeriadosCalculados = confirm(
@@ -89,9 +89,9 @@ function secaf() {
       const formatoPortugues = new RegExp(`${diaAtual}${mesAbrev}`, 'i');
 
       if (formatoPortugues.test(textoData)) {
-        const pular_data_de_hoje = confirm("Pular a data de hoje na primeira linha?");
-        if (pular_data_de_hoje) {
-          console.log("A data da primeira linha corresponde à data atual. Pulando esta linha.");
+        const incluir_data_de_hoje = confirm("Incluir a data de hoje?");
+        if (!incluir_data_de_hoje) {
+          console.log("Pulando data de hoje.");
           pularPrimeiraLinha = true;
         }
       }
@@ -169,10 +169,6 @@ function secaf() {
       <tr style="background-color: #f2f2f2;">
         <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Dias de segunda a sexta</td>
         <td style="padding: 8px; border: 1px solid #ddd;">${diasSegundaASexta}</td>
-      </tr>
-      <tr>
-        <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Dias úteis (SECAF)</td>
-        <td style="padding: 8px; border: 1px solid #ddd;">${diasUteis}</td>
       </tr>
       <tr style="background-color: #f2f2f2;">
         <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Feriados e pontos facultativos</td>
@@ -266,14 +262,14 @@ function contarDiasUteisPassados(ano, mes) {
   const hoje = new Date();
   const ultimoDia = new Date(ano, mes, 0).getDate();
   let diasUteisPassados = 0;
-  
+
   for (let dia = 1; dia <= hoje.getDate(); dia++) {
     const data = new Date(ano, mes - 1, dia);
     if (data.getDay() !== 0 && data.getDay() !== 6) { // Skip weekends
       diasUteisPassados++;
     }
   }
-  
+
   return diasUteisPassados;
 }
 
